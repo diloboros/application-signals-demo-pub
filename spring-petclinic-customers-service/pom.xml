@@ -178,6 +178,11 @@
       <artifactId>opentelemetry-instrumentation-annotations</artifactId>
       <version>1.22.1</version>
     </dependency>
+    <dependency>
+      <groupId>io.opentelemetry.instrumentation</groupId>
+      <artifactId>opentelemetry-logback-mdc-1.0</artifactId>
+      <version>1.22.1</version>
+    </dependency>
 
     <!-- Testing -->
     <dependency>

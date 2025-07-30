@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <include resource="org/springframework/boot/logging/logback/base.xml"/>
-  <!-- Required for Loglevel managment into the Spring Petclinic Admin Server-->
+  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
   <jmxConfigurator/>
   
-  <!-- Add file appender with trace IDs -->
-  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>/var/log/application-signals/customers.log</file>
-    <append>true</append>
+  <!-- Console appender with trace context -->
+  <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %5p - %m%n</pattern> 
+      <pattern>%d{HH:mm:ss.SSS} trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>
     </encoder>
   </appender>
   
-  <!-- Add the file appender to root logger -->
+  <!-- File appender with trace context -->
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>app.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>
+    </encoder>
+  </appender>
+  
+  <!-- Wrap both appenders with OpenTelemetryAppender -->
+  <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.mdc.v1_0.OpenTelemetryAppender">
+    <!--TODO: addbaggage?-->
+    <!--<addBaggage>true</addBaggage>-->
+    <appender-ref ref="CONSOLE"/>
+    <appender-ref ref="FILE"/>
+  </appender>
+  
   <root level="INFO">
-    <appender-ref ref="FILE" />
+    <appender-ref ref="OTEL"/>
   </root>
 </configuration>
