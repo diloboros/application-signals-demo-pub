@@ -13,7 +13,6 @@
   <!-- File appender with trace context -->
   <appender name="FILE" class="ch.qos.logback.core.FileAppender">
     <file>/var/log/customers/app.log</file>
-    <append>true</append>
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>
     </encoder>
