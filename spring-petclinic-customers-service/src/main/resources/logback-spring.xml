@@ -1,39 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-    <!-- Include Spring Boot's base configuration -->
-    <include resource="org/springframework/boot/logging/logback/base.xml"/>
-    
-    <!-- Required for Loglevel management into the Spring Petclinic Admin Server-->
-    <jmxConfigurator/>
-    
-    <!-- Override the console appender to include trace IDs using AWS MDC keys -->
-    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
-        <encoder>
-            <pattern>${CONSOLE_LOG_PATTERN:-%clr(%d{${LOG_DATEFORMAT_PATTERN:-yyyy-MM-dd HH:mm:ss.SSS}}){faint} %clr(${LOG_LEVEL_PATTERN:-%5p}) %clr(${PID:- }){magenta} %clr(---){faint} %clr([%15.15t]){faint} %clr([trace=%X{aws.trace_id:-} span=%X{aws.span_id:-}]){blue} %clr(%-40.40logger{39}){cyan} %clr(:){faint} %m%n${LOG_EXCEPTION_CONVERSION_WORD:-%wEx}}</pattern>
-            <charset>${CONSOLE_LOG_CHARSET:-${file.encoding:-UTF-8}}</charset>
-        </encoder>
-    </appender>
-    
-    <!-- File appender with trace IDs for CloudWatch Agent -->
-    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <file>/var/log/application-signals/customers.log</file>
-        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
-            <fileNamePattern>/var/log/application-signals/customers-%d{yyyy-MM-dd}.%i.log</fileNamePattern>
-            <maxFileSize>10MB</maxFileSize>
-            <maxHistory>7</maxHistory>
-        </rollingPolicy>
-        <encoder>
-            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} %5p ${PID:- } --- [%t] [trace=%X{aws.trace_id:-} span=%X{aws.span_id:-}] %-40.40logger{39} : %m%n</pattern>
-            <charset>UTF-8</charset>
-        </encoder>
-    </appender>
-    
-    <!-- Root logger configuration -->
-    <root level="${logging.level.root:-INFO}">
-        <appender-ref ref="CONSOLE" />
-        <appender-ref ref="FILE" />
-    </root>
-    
-    <!-- Application-specific logger -->
-    <logger name="org.springframework.samples.petclinic" level="DEBUG" />
+  <include resource="org/springframework/boot/logging/logback/base.xml"/>
+  <!-- Required for Loglevel managment into the Spring Petclinic Admin Server-->
+  <jmxConfigurator/>
+  
+  <!-- Add file appender with trace IDs -->
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>/var/log/application-signals/customers.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %5p [%t] %logger{36} - %m%n</pattern>
+    </encoder>
+  </appender>
+  
+  <!-- Add the file appender to root logger -->
+  <root level="INFO">
+    <appender-ref ref="FILE" />
+  </root>
 </configuration>
