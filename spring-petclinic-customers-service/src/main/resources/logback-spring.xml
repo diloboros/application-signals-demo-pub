@@ -3,7 +3,7 @@
   <!-- Console appender with trace context -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
-      <pattern>trace_id=%X{trace_id} AWS-XRAY-TRACE-ID=%X{AWS_XRAY_TRACE_ID} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>
+      <pattern>trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %5p - %m%n</pattern> 
     </encoder>
   </appender>
   
@@ -12,7 +12,7 @@
     <file>/var/log/customers/app.log</file>
     <append>true</append>
     <encoder>
-      <pattern>trace_id=%X{trace_id} AWS-XRAY-TRACE-ID=%X{AWS_XRAY_TRACE_ID} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>
+      <pattern>trace_id=%mdc{trace_id} span_id=%mdc{span_id} trace_flags=%mdc{trace_flags} %5p - %m%n</pattern> 
     </encoder>
   </appender>
   
