@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
-  <include resource="org/springframework/boot/logging/logback/defaults.xml"/>
-  <jmxConfigurator/>
-  
   <!-- Console appender with trace context -->
   <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
     <encoder>
@@ -11,19 +8,20 @@
   </appender>
   
   <!-- File appender with trace context -->
-  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-    <file>/var/log/customers/app.log</file>
-    <encoder>
-      <pattern>%d{HH:mm:ss.SSS} trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>
-    </encoder>
-  </appender>
+  <!--<appender name="FILE" class="ch.qos.logback.core.FileAppender">-->
+    <!--<file>/var/log/customers/app.log</file>-->
+    <!--<append>true</append>-->
+    <!--<encoder>-->
+      <!--<pattern>%d{HH:mm:ss.SSS} trace_id=%X{trace_id} span_id=%X{span_id} trace_flags=%X{trace_flags} %msg%n</pattern>-->
+    <!--</encoder>-->
+  <!--</appender>-->
   
   <!-- Wrap both appenders with OpenTelemetryAppender -->
   <appender name="OTEL" class="io.opentelemetry.instrumentation.logback.mdc.v1_0.OpenTelemetryAppender">
     <!--TODO: addbaggage?-->
     <!--<addBaggage>true</addBaggage>-->
     <appender-ref ref="CONSOLE"/>
-    <appender-ref ref="FILE"/>
+    <!--<appender-ref ref="FILE"/>-->
   </appender>
   
   <root level="INFO">
