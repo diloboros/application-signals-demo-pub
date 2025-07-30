@@ -181,7 +181,7 @@
     <dependency>
       <groupId>io.opentelemetry.instrumentation</groupId>
       <artifactId>opentelemetry-logback-mdc-1.0</artifactId>
-      <version>1.22.1</version>
+      <version>1.22.1-alpha</version>
     </dependency>
 
     <!-- Testing -->
