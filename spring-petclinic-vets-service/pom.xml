@@ -130,6 +130,16 @@
     <artifactId>aws-java-sdk-lambda</artifactId>
     <version>1.12.462</version>
   </dependency>
+  <dependency>
+    <groupId>io.opentelemetry.instrumentation</groupId>
+    <artifactId>opentelemetry-instrumentation-annotations</artifactId>
+    <version>2.18.1</version>
+  </dependency>
+  <dependency>
+    <groupId>io.opentelemetry.instrumentation</groupId>
+    <artifactId>opentelemetry-logback-mdc-1.0</artifactId>
+    <version>2.18.1-alpha</version>
+  </dependency>
 
   <!-- Testing -->
   <dependency>
